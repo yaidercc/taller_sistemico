@@ -18,13 +18,14 @@ public class Lopez_Cordoba {
      */
     public static void main(String[] args) {
         Banco ban = new Banco();
-        ban.agregar(2, 2, "yaider", "cordoba cardoba", "yaiderc19@gmail.com", 7894561);
-        ban.agregar(1, 1, "cristian", "grisales benitez", "frisvi@gmail.com", 7985461);
-        ban.agregar(1, 2, "hildefonso", "muñoz david", "jildo@gmail.com", 7995454);
-        double n = 7995454;
-        ban.eliminar(n);
-        System.out.println();
-        ban.corriente();
+        // 
+        ban.agregar(2, 1, "yaider", "cordoba cardoba", "yaiderc19@gmail.com", 1);
+        ban.agregar(2, 2, "cristian", "grisales benitez", "frisvi@gmail.com", 3);
+        ban.agregar(2, 2, "hildefonso", "muñoz david", "jildo@gmail.com", 5);
+        ban.agregar(1, 2, "marcela", "arboleda arbelaez", "marcearbe@gmail.com", 6);
+        ban.agregar(1, 2, "juliana", "salazar bedoya", "sabedoya@gmail.com", 7);
+        ban.agregar(1, 2, "luisa", "fernanda moscu", "lufemos@gmail.com", 8);
+        ban.eliminar(1);
         ban.imprimir();
     }
 

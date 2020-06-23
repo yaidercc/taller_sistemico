@@ -11,7 +11,7 @@ package modelo;
  */
 public class NodoArbolBalanceado {
 
-    int saldo;
+    double saldo;
     int genero;
     String correo;
     String nombre;

@@ -104,9 +104,33 @@ public class Banco {
             }
         }// Fin del for
     }
+    
+    public ArrayList<NodoArbolBalanceado> camino(double codigo) {
+        ArrayList<NodoArbolBalanceado> lista = new ArrayList<>();
 
-    private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoizquierdo;
+        NodoArbolBalanceado actual = raiz;
+
+        while (actual != null) {
+            lista.add(actual);
+            if (codigo < actual.codigo) {
+                actual = actual.hijoizquierdo;
+            } else if (codigo > actual.codigo) {
+                actual = actual.hijoderecho;
+            } else {
+                break;
+            }
+        }
+
+        if (actual == null) {
+            lista.clear();
+        }
+
+        return lista;
+    }
+
+
+private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
+        NodoArbolBalanceado B = A.hijoderecho;
 
         if (A == raiz) {
             raiz = B;
@@ -134,6 +158,7 @@ public class Banco {
         } else {
             padreA.hijoderecho = C;
         }
+
         A.hijoizquierdo = C.hijoderecho;
         B.hijoderecho = C.hijoizquierdo;
         C.hijoizquierdo = B;
@@ -143,34 +168,11 @@ public class Banco {
         B.actualizaraltura();
         C.actualizaraltura();
     }
+     private void balanceRR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
+        NodoArbolBalanceado B = A.hijoderecho;
 
-    public ArrayList<NodoArbolBalanceado> camino(double codigo) {
-        ArrayList<NodoArbolBalanceado> lista = new ArrayList<>();
-
-        NodoArbolBalanceado actual = raiz;
-
-        while (actual != null) {
-            lista.add(actual);
-            if (codigo < actual.codigo) {
-                actual = actual.hijoizquierdo;
-            } else if (codigo > actual.codigo) {
-                actual = actual.hijoderecho;
-            } else {
-                break;
-            }
-        }
-
-        if (actual == null) {
-            lista.clear();
-        }
-
-        return lista;
-    }
-
-    private void balanceRR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoizquierdo;
         if (A == raiz) {
-            B = raiz;
+            raiz = B;
         } else if (padreA.hijoizquierdo == A) {
             padreA.hijoizquierdo = B;
         } else {
@@ -178,21 +180,23 @@ public class Banco {
         }
 
         A.hijoderecho = B.hijoizquierdo;
-        B.hijoderecho = A;
+        B.hijoizquierdo = A;
+        A.actualizaraltura();
+        B.actualizaraltura();
     }
 
     private void balanceRL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         NodoArbolBalanceado B = A.hijoderecho;
         NodoArbolBalanceado C = B.hijoizquierdo;
         if (A == raiz) {
-            B = raiz;
+            raiz=C;
         } else if (padreA.hijoizquierdo == A) {
             padreA.hijoizquierdo = C;
         } else {
-            padreA.hijoderecho = C;
+            padreA.hijoizquierdo = C;
         }
         A.hijoderecho = C.hijoizquierdo;
-        B.hijoderecho = C.hijoderecho;
+        B.hijoizquierdo = C.hijoderecho;
         C.hijoizquierdo = A;
         C.hijoderecho = B;
 
@@ -229,20 +233,19 @@ public class Banco {
         return false;
     }
 
-    public int corriente() {
-        return corriente(raiz);
-    }
 
-    private int corriente(NodoArbolBalanceado r) {
+    public static double dineroMujeres(NodoArbolBalanceado r,double dinero){
         if (r != null) {
-            if (r.tipocuenta == 2) {
-                System.out.println("coerrientes: " + r.codigo);
-                return corriente(r.hijoderecho) + corriente(r.hijoizquierdo);
+            if (r.genero==1) {
+                dinero+=r.saldo;
+                return dineroMujeres(r.hijoderecho,dinero) + dineroMujeres(r.hijoizquierdo,dinero);
             } else {
-                return corriente(r.hijoderecho) + corriente(r.hijoizquierdo);
+                return dineroMujeres(r.hijoderecho,dinero) + dineroMujeres(r.hijoizquierdo,dinero);
             }
         } else {
-            return 0;
+            return dinero;
         }
     }
+    
+
 }
