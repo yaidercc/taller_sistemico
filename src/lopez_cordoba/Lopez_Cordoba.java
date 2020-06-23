@@ -17,13 +17,15 @@ public class Lopez_Cordoba {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       Banco ban = new Banco();
-       ban.agregar(2, 1, "yaider", "cordoba cardoba", "yaiderc19@gmail.com", 7894561);
-       ban.agregar(2, 1, "cristian", "grisales benitez", "frisvi@gmail.com", 7985461);
-       ban.agregar(2, 1, "hildefonso", "muñoz david", "jildo@gmail.com", 7995454);
-       double n=7995454;
-       ban.eliminar(n);
-       ban.imprimir();
+        Banco ban = new Banco();
+        ban.agregar(2, 2, "yaider", "cordoba cardoba", "yaiderc19@gmail.com", 7894561);
+        ban.agregar(1, 1, "cristian", "grisales benitez", "frisvi@gmail.com", 7985461);
+        ban.agregar(1, 2, "hildefonso", "muñoz david", "jildo@gmail.com", 7995454);
+        double n = 7995454;
+        ban.eliminar(n);
+        System.out.println();
+        ban.corriente();
+        ban.imprimir();
     }
-    
+
 }

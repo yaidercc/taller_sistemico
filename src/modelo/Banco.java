@@ -42,7 +42,7 @@ public class Banco {
         return inserto;
     }
 
-    private boolean insertar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
+    public boolean insertar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
         if (raiz == null) {
             raiz = new NodoArbolBalanceado(genero, tipocuenta, nombre, apellido, correo, codigo);
             tamaño = 1;
@@ -134,7 +134,6 @@ public class Banco {
         } else {
             padreA.hijoderecho = C;
         }
-
         A.hijoizquierdo = C.hijoderecho;
         B.hijoderecho = C.hijoizquierdo;
         C.hijoizquierdo = B;
@@ -216,8 +215,8 @@ public class Banco {
                 n = r;
                 return eliminar(codigo, r.hijoderecho, n);
             } else {
-                if (r==raiz) {
-                    raiz=null;
+                if (r == raiz) {
+                    raiz = null;
                 } else {
                     if (n.codigo > codigo) {
                         n.hijoizquierdo = null;
@@ -228,6 +227,22 @@ public class Banco {
             }
         }
         return false;
+    }
 
+    public int corriente() {
+        return corriente(raiz);
+    }
+
+    private int corriente(NodoArbolBalanceado r) {
+        if (r != null) {
+            if (r.tipocuenta == 2) {
+                System.out.println("coerrientes: " + r.codigo);
+                return corriente(r.hijoderecho) + corriente(r.hijoizquierdo);
+            } else {
+                return corriente(r.hijoderecho) + corriente(r.hijoizquierdo);
+            }
+        } else {
+            return 0;
+        }
     }
 }
