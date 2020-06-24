@@ -104,7 +104,7 @@ public class Banco {
             }
         }// Fin del for
     }
-    
+
     public ArrayList<NodoArbolBalanceado> camino(double codigo) {
         ArrayList<NodoArbolBalanceado> lista = new ArrayList<>();
 
@@ -128,8 +128,7 @@ public class Banco {
         return lista;
     }
 
-
-private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
+    private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         NodoArbolBalanceado B = A.hijoderecho;
 
         if (A == raiz) {
@@ -168,7 +167,8 @@ private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         B.actualizaraltura();
         C.actualizaraltura();
     }
-     private void balanceRR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
+
+    private void balanceRR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         NodoArbolBalanceado B = A.hijoderecho;
 
         if (A == raiz) {
@@ -189,7 +189,7 @@ private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         NodoArbolBalanceado B = A.hijoderecho;
         NodoArbolBalanceado C = B.hijoizquierdo;
         if (A == raiz) {
-            raiz=C;
+            raiz = C;
         } else if (padreA.hijoizquierdo == A) {
             padreA.hijoizquierdo = C;
         } else {
@@ -233,19 +233,55 @@ private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
         return false;
     }
 
+    public double promedioDineroMujeres() {
+        return promedioDineroMujeres(raiz, 0, 0);
+    }
 
-    public static double dineroMujeres(NodoArbolBalanceado r,double dinero){
+    private static double promedioDineroMujeres(NodoArbolBalanceado r, double dinero, int cantidad) {
         if (r != null) {
-            if (r.genero==1) {
-                dinero+=r.saldo;
-                return dineroMujeres(r.hijoderecho,dinero) + dineroMujeres(r.hijoizquierdo,dinero);
+            if (r.genero == 1 && r.tipocuenta == 1) {
+                dinero += r.saldo;
+                return promedioDineroMujeres(r.hijoderecho, dinero, cantidad + 1) + promedioDineroMujeres(r.hijoizquierdo, dinero, cantidad + 1);
             } else {
-                return dineroMujeres(r.hijoderecho,dinero) + dineroMujeres(r.hijoizquierdo,dinero);
+                return promedioDineroMujeres(r.hijoderecho, dinero, cantidad + 1) + promedioDineroMujeres(r.hijoizquierdo, dinero, cantidad + 1);
             }
         } else {
-            return dinero;
+            return dinero / cantidad;
         }
     }
-    
+
+    public double CadenaDeBusqueda(String cadena) {
+        Banco aux = new Banco();
+        return CadenaDeBusqueda(raiz, cadena, 0, 0);
+    }
+
+    private double CadenaDeBusqueda(NodoArbolBalanceado r, String cadena, int i, int j) {
+        if (r != null) {
+
+            if (i < r.apellido.length() && j<cadena.length() ) {
+                //compara caracter por caracter
+
+                if (cadena.charAt(j) == r.apellido.charAt(i)) {
+                    //si existe pasa al siguiente caracter de la cadena 
+                    i++;
+                    j++;
+                    return CadenaDeBusqueda(r, cadena, i, j);
+                } else {
+                    // si no solo pasa al siguiente caracter del nombre
+                    i++;
+                    return CadenaDeBusqueda(r, cadena, i, j);
+                }
+
+            }else{
+                if(j==cadena.length()){
+                    return r.codigo;
+                }else{
+                    return 01;
+                }
+            }
+
+        }
+        return 0;
+    }
 
 }
