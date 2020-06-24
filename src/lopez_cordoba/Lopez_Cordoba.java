@@ -25,11 +25,11 @@ public class Lopez_Cordoba {
         ban.agregar(1, 2, "marcela", "arboleda arbelaez", "marcearbe@gmail.com", 6);
         ban.agregar(1, 2, "juliana", "salazar bedoya", "sabedoya@gmail.com", 7);
         ban.agregar(1, 2, "luisa", "fernanda moscu", "lufemos@gmail.com", 8);
-        ban.eliminar(1);
-        System.out.println("cuenta: "+ban.CadenaDeBusqueda("arbelaeza"));
-        
-        ;
-
+        try {
+            ban.CadenaDeBusqueda("juli");
+        } catch (Exception e) {
+            System.err.println("algo sucedio");
+        }
         ban.imprimir();
 
     }

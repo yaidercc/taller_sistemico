@@ -252,34 +252,29 @@ public class Banco {
 
     public double CadenaDeBusqueda(String cadena) {
         Banco aux = new Banco();
-        return CadenaDeBusqueda(raiz, cadena, 0, 0);
+        return CadenaDeBusqueda(raiz,null, cadena, 0, 0, 0);
     }
 
-    private double CadenaDeBusqueda(NodoArbolBalanceado r, String cadena, int i, int j) {
+    private double CadenaDeBusqueda(NodoArbolBalanceado r, NodoArbolBalanceado n, String cadena, int i, int j, int x) {
+        String vector[] = {r.nombre, r.apellido, r.correo};
         if (r != null) {
-
-            if (i < r.apellido.length() && j<cadena.length() ) {
-                //compara caracter por caracter
-
-                if (cadena.charAt(j) == r.apellido.charAt(i)) {
-                    //si existe pasa al siguiente caracter de la cadena 
-                    i++;
-                    j++;
-                    return CadenaDeBusqueda(r, cadena, i, j);
+            if (x < vector[i].length() && j < cadena.length()) {
+                if (cadena.charAt(j) == vector[i].charAt(x)) {
+                    return CadenaDeBusqueda(r, n, cadena, i, j + 1, x + 1);
                 } else {
-                    // si no solo pasa al siguiente caracter del nombre
-                    i++;
-                    return CadenaDeBusqueda(r, cadena, i, j);
+                    return CadenaDeBusqueda(r, n, cadena, i, j, x + 1);
                 }
-
-            }else{
-                if(j==cadena.length()){
+            } else {
+                if (j == cadena.length()) {
                     return r.codigo;
-                }else{
-                    return 01;
+                } else {
+                    if (i < vector.length - 1) {
+                        return CadenaDeBusqueda(r, n, cadena, i + 1, j = 0, x = 0);
+                    } else {
+                        return  (CadenaDeBusqueda(r.hijoderecho, n, cadena, i=0, j=0, x=0))+(CadenaDeBusqueda(r.hijoizquierdo, n, cadena, i, j, x));
+                    }
                 }
             }
-
         }
         return 0;
     }
