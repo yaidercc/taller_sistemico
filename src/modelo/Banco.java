@@ -33,14 +33,6 @@ public class Banco {
         }
     }
 
-    public CuentaBancaria getRaiz() {
-        return raiz;
-    }
-
-    public void setRaiz(CuentaBancaria raiz) {
-        this.raiz = raiz;
-    }
-
     public boolean agregar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
         boolean inserto = insertar(genero, tipocuenta, nombre, apellido, correo, codigo);
         if (inserto) {
@@ -273,6 +265,50 @@ public class Banco {
             CadenaDeBusqueda(r.getHijoderecho(), cadena, cuenta);
         }
         return cuenta.raiz;
+    }
+
+    public boolean Consignaciones(double cuenta, double dinero) {
+        return Consignaciones(raiz, cuenta, dinero);
+    }
+
+    private boolean Consignaciones(CuentaBancaria r, double cuenta, double dinero) {
+        if (r != null) {
+            if (r.getCodigo() > cuenta) {
+                return Consignaciones(r.getHijoizquierdo(), cuenta, dinero);
+            } else if (r.getCodigo() < cuenta) {
+                return Consignaciones(r.getHijoizquierdo(), cuenta, dinero);
+            } else {
+                r.setSaldo(r.getSaldo() + dinero);
+                System.out.println("saldo actual: " + r.getSaldo());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean Retiros(String correo, double Nrocuenta, double dinero) {
+        return Retiros(raiz, correo, Nrocuenta, dinero);
+    }
+
+    private boolean Retiros(CuentaBancaria r, String correo, double Nrocuenta, double dinero) {
+        if (r != null) {
+            if (r.getCodigo() > Nrocuenta) {
+                return Retiros(r.getHijoizquierdo(), correo, Nrocuenta, dinero);
+            } else if (r.getCodigo() < Nrocuenta) {
+                return Retiros(r.getHijoderecho(), correo, Nrocuenta, dinero);
+            } else {
+                if (correo.equals(r.getCorreo()) && dinero <= r.getSaldo()) {
+                    r.setSaldo(r.getSaldo() - dinero);
+                    System.out.println("transaccion exitosa!");
+                    System.out.println("saldo actual: "+r.getSaldo());
+                    return true;
+                } else {
+                    System.out.println("algo salio mal!");
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
 }

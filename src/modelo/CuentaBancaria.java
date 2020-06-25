@@ -115,22 +115,9 @@ public class CuentaBancaria {
     public void setHijoderecho(CuentaBancaria hijoderecho) {
         this.hijoderecho = hijoderecho;
     }
-
-    public boolean Consignaciones(CuentaBancaria r, double cuenta, double dinero) {
-        if (r != null) {
-            if (r.codigo > cuenta) {
-                return Consignaciones(r.hijoizquierdo, cuenta, dinero);
-            } else if (r.codigo < cuenta) {
-                return Consignaciones(r.hijoizquierdo, cuenta, dinero);
-            }else{
-                r.saldo+=dinero;
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public boolean Retiros() {
+        
         return true;
     }
 
@@ -151,7 +138,6 @@ public class CuentaBancaria {
 
     }
     //factor de balance
-
     public int factorbalance() {
         if (EsHoja()) {
             return 0;
