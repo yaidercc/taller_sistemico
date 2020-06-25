@@ -6,6 +6,7 @@
 package lopez_cordoba;
 
 import modelo.Banco;
+import modelo.CuentaBancaria;
 
 /**
  *
@@ -18,18 +19,21 @@ public class Lopez_Cordoba {
      */
     public static void main(String[] args) {
         Banco ban = new Banco();
+        
         // 
-        ban.agregar(2, 1, "yaider", "cordoba cardoba", "yaiderc19@gmail.com", 1);
-        ban.agregar(2, 2, "cristian", "grisales benitez", "frisvi@gmail.com", 3);
-        ban.agregar(2, 2, "hildefonso", "muñoz david", "jildo@gmail.com", 5);
-        ban.agregar(1, 2, "marcela", "arboleda arbelaez", "marcearbe@gmail.com", 6);
-        ban.agregar(1, 2, "juliana", "salazar bedoya", "sabedoya@gmail.com", 7);
-        ban.agregar(1, 2, "luisa", "fernanda moscu", "lufemos@gmail.com", 8);
-        try {
-            ban.CadenaDeBusqueda("juli");
+
+        ban.agregar(1, 2, "mar", "arb", "marc", 6);
+        ban.agregar(1, 2, "juli", "sala", "sabe", 10);
+        ban.agregar(1, 2, "lui", "fe mosu", "lufe", 8);
+        ban.agregar(1, 2, "luis", "fer mo", "lufa", 7);
+       try {
+            Banco cuenta = new Banco();
+            cuenta.setRaiz(ban.CadenaDeBusqueda("ma"));
+            cuenta.imprimir();
         } catch (Exception e) {
-            System.err.println("algo sucedio");
+            System.err.println("no existe la cuenta");
         }
+
         ban.imprimir();
 
     }

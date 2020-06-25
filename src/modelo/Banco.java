@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Banco {
 
     int tamaño;
-    NodoArbolBalanceado raiz;
+    CuentaBancaria raiz;
 
     public Banco() {
         raiz = null;
@@ -25,12 +25,20 @@ public class Banco {
         imprimir(raiz, "");
     }
 
-    private void imprimir(NodoArbolBalanceado r, String espacios) {
+    private void imprimir(CuentaBancaria r, String espacios) {
         if (r != null) {
-            imprimir(r.hijoderecho, espacios + "   ");
-            System.out.println(espacios + r.codigo);
-            imprimir(r.hijoizquierdo, espacios + "   ");
+            imprimir(r.getHijoderecho(), espacios + "   ");
+            System.out.println(espacios + r.getCodigo());
+            imprimir(r.getHijoizquierdo(), espacios + "   ");
         }
+    }
+
+    public CuentaBancaria getRaiz() {
+        return raiz;
+    }
+
+    public void setRaiz(CuentaBancaria raiz) {
+        this.raiz = raiz;
     }
 
     public boolean agregar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
@@ -44,28 +52,28 @@ public class Banco {
 
     public boolean insertar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
         if (raiz == null) {
-            raiz = new NodoArbolBalanceado(genero, tipocuenta, nombre, apellido, correo, codigo);
+            raiz = new CuentaBancaria(genero, tipocuenta, nombre, apellido, correo, codigo);
             tamaño = 1;
             return true;
         } else {
-            NodoArbolBalanceado actual = raiz;
+            CuentaBancaria actual = raiz;
 
             while (true) {
-                if (codigo < actual.codigo) {
-                    if (actual.hijoizquierdo == null) {
-                        actual.hijoizquierdo = new NodoArbolBalanceado(genero, tipocuenta, nombre, apellido, correo, codigo);
+                if (codigo < actual.getCodigo()) {
+                    if (actual.getHijoizquierdo() == null) {
+                        actual.setHijoizquierdo(new CuentaBancaria(genero, tipocuenta, nombre, apellido, correo, codigo));
                         tamaño++;
                         return true;
                     } else {
-                        actual = actual.hijoizquierdo;
+                        actual = actual.getHijoizquierdo();
                     }
-                } else if (codigo > actual.codigo) {
-                    if (actual.hijoderecho == null) {
-                        actual.hijoderecho = new NodoArbolBalanceado(genero, tipocuenta, nombre, apellido, correo, codigo);
+                } else if (codigo > actual.getCodigo()) {
+                    if (actual.getHijoderecho() == null) {
+                        actual.setHijoderecho(new CuentaBancaria(genero, tipocuenta, nombre, apellido, correo, codigo));
                         tamaño++;
                         return true;
                     } else {
-                        actual = actual.hijoderecho;
+                        actual = actual.getHijoderecho();
                     }
                 } else {// No se permiten datos repetidos
                     return false;
@@ -75,28 +83,28 @@ public class Banco {
     }
 
     private void balancear(double codigo) {
-        ArrayList<NodoArbolBalanceado> lista = camino(codigo);
+        ArrayList<CuentaBancaria> lista = camino(codigo);
         int indiceUltimo = lista.size() - 1;
 
         for (int i = indiceUltimo; i >= 0; i--) {
-            NodoArbolBalanceado A = lista.get(i);
+            CuentaBancaria A = lista.get(i);
             A.actualizaraltura();
 
-            NodoArbolBalanceado padreA = null;
+            CuentaBancaria padreA = null;
 
             if (A != raiz) {
                 padreA = lista.get(i - 1);
             }
 
             if (A.factorbalance() == -2) {
-                if (A.hijoizquierdo.factorbalance() <= 0) {
+                if (A.getHijoizquierdo().factorbalance() <= 0) {
                     balanceLL(A, padreA);
                 } else {
                     balanceLR(A, padreA);
                 }
             } else if (A.factorbalance() == 2) {
                 // Ejercicio
-                if (A.hijoderecho.factorbalance() >= 0) {
+                if (A.getHijoderecho().factorbalance() >= 0) {
                     balanceRR(A, padreA);
                 } else {
                     balanceRL(A, padreA);
@@ -105,17 +113,17 @@ public class Banco {
         }// Fin del for
     }
 
-    public ArrayList<NodoArbolBalanceado> camino(double codigo) {
-        ArrayList<NodoArbolBalanceado> lista = new ArrayList<>();
+    public ArrayList<CuentaBancaria> camino(double codigo) {
+        ArrayList<CuentaBancaria> lista = new ArrayList<>();
 
-        NodoArbolBalanceado actual = raiz;
+        CuentaBancaria actual = raiz;
 
         while (actual != null) {
             lista.add(actual);
-            if (codigo < actual.codigo) {
-                actual = actual.hijoizquierdo;
-            } else if (codigo > actual.codigo) {
-                actual = actual.hijoderecho;
+            if (codigo < actual.getCodigo()) {
+                actual = actual.getHijoizquierdo();
+            } else if (codigo > actual.getCodigo()) {
+                actual = actual.getHijoderecho();
             } else {
                 break;
             }
@@ -128,77 +136,77 @@ public class Banco {
         return lista;
     }
 
-    private void balanceLL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoderecho;
+    private void balanceLL(CuentaBancaria A, CuentaBancaria padreA) {
+        CuentaBancaria B = A.getHijoderecho();
 
         if (A == raiz) {
             raiz = B;
-        } else if (padreA.hijoizquierdo == A) {
-            padreA.hijoizquierdo = B;
+        } else if (padreA.getHijoizquierdo() == A) {
+            padreA.setHijoizquierdo(B);
         } else {
-            padreA.hijoderecho = B;
+            padreA.setHijoderecho(B);
         }
 
-        A.hijoizquierdo = B.hijoderecho;
-        B.hijoderecho = A;
+        A.setHijoderecho(B.getHijoderecho());
+        B.setHijoderecho(A);
 
         A.actualizaraltura();
         B.actualizaraltura();
     }
 
-    private void balanceLR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoizquierdo;
-        NodoArbolBalanceado C = B.hijoderecho;
+    private void balanceLR(CuentaBancaria A, CuentaBancaria padreA) {
+        CuentaBancaria B = A.getHijoizquierdo();
+        CuentaBancaria C = B.getHijoderecho();
 
         if (A == raiz) {
             raiz = C;
-        } else if (padreA.hijoizquierdo == A) {
-            padreA.hijoizquierdo = C;
+        } else if (padreA.getHijoizquierdo() == A) {
+            padreA.setHijoizquierdo(C);
         } else {
-            padreA.hijoderecho = C;
+            padreA.setHijoderecho(C);
         }
 
-        A.hijoizquierdo = C.hijoderecho;
-        B.hijoderecho = C.hijoizquierdo;
-        C.hijoizquierdo = B;
-        C.hijoderecho = A;
+        A.setHijoizquierdo(C.getHijoderecho());
+        B.setHijoderecho(C.getHijoizquierdo());
+        C.setHijoizquierdo(B);
+        C.setHijoderecho(A);
 
         A.actualizaraltura();
         B.actualizaraltura();
         C.actualizaraltura();
     }
 
-    private void balanceRR(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoderecho;
+    private void balanceRR(CuentaBancaria A, CuentaBancaria padreA) {
+        CuentaBancaria B = A.getHijoizquierdo();
 
         if (A == raiz) {
             raiz = B;
-        } else if (padreA.hijoizquierdo == A) {
-            padreA.hijoizquierdo = B;
+        } else if (padreA.getHijoizquierdo() == A) {
+            padreA.setHijoizquierdo(B);
         } else {
-            padreA.hijoderecho = B;
+            padreA.setHijoderecho(B);
         }
 
-        A.hijoderecho = B.hijoizquierdo;
-        B.hijoizquierdo = A;
+        A.setHijoizquierdo(B.getHijoizquierdo());
+        B.setHijoizquierdo(A);
         A.actualizaraltura();
         B.actualizaraltura();
     }
 
-    private void balanceRL(NodoArbolBalanceado A, NodoArbolBalanceado padreA) {
-        NodoArbolBalanceado B = A.hijoderecho;
-        NodoArbolBalanceado C = B.hijoizquierdo;
+    private void balanceRL(CuentaBancaria A, CuentaBancaria padreA) {
+        CuentaBancaria B = A.getHijoderecho();
+        CuentaBancaria C = B.getHijoizquierdo();
         if (A == raiz) {
             raiz = C;
-        } else if (padreA.hijoizquierdo == A) {
-            padreA.hijoizquierdo = C;
+        } else if (padreA.getHijoizquierdo() == A) {
+            padreA.setHijoizquierdo(C);
         } else {
-            padreA.hijoizquierdo = C;
+            padreA.setHijoizquierdo(C);
         }
-        A.hijoderecho = C.hijoizquierdo;
-        B.hijoizquierdo = C.hijoderecho;
-        C.hijoizquierdo = A;
-        C.hijoderecho = B;
+        A.setHijoderecho(C.getHijoizquierdo());
+        B.setHijoizquierdo(C.getHijoderecho());
+        C.setHijoizquierdo(A);
+        C.setHijoderecho(B);
 
         A.actualizaraltura();
         B.actualizaraltura();
@@ -210,22 +218,22 @@ public class Banco {
         return eliminar(codigo, raiz, null);
     }
 
-    private boolean eliminar(double codigo, NodoArbolBalanceado r, NodoArbolBalanceado n) {
+    private boolean eliminar(double codigo, CuentaBancaria r, CuentaBancaria n) {
         if (r != null) {
-            if (r.codigo > codigo) {
+            if (r.getCodigo() > codigo) {
                 n = r;
-                return eliminar(codigo, r.hijoizquierdo, n);
-            } else if (r.codigo < codigo) {
+                return eliminar(codigo, r.getHijoizquierdo(), n);
+            } else if (r.getCodigo() < codigo) {
                 n = r;
-                return eliminar(codigo, r.hijoderecho, n);
+                return eliminar(codigo, r.getHijoderecho(), n);
             } else {
                 if (r == raiz) {
                     raiz = null;
                 } else {
-                    if (n.codigo > codigo) {
-                        n.hijoizquierdo = null;
+                    if (n.getCodigo() > codigo) {
+                        n.setHijoizquierdo(null);
                     } else {
-                        n.hijoderecho = null;
+                        n.setHijoizquierdo(null);
                     }
                 }
             }
@@ -237,46 +245,34 @@ public class Banco {
         return promedioDineroMujeres(raiz, 0, 0);
     }
 
-    private static double promedioDineroMujeres(NodoArbolBalanceado r, double dinero, int cantidad) {
+    private static double promedioDineroMujeres(CuentaBancaria r, double dinero, int cantidad) {
         if (r != null) {
-            if (r.genero == 1 && r.tipocuenta == 1) {
-                dinero += r.saldo;
-                return promedioDineroMujeres(r.hijoderecho, dinero, cantidad + 1) + promedioDineroMujeres(r.hijoizquierdo, dinero, cantidad + 1);
+            if (r.getGenero() == 1 && r.getTipocuenta() == 1) {
+                dinero += r.getSaldo();
+                return promedioDineroMujeres(r.getHijoderecho(), dinero, cantidad + 1) + promedioDineroMujeres(r.getHijoizquierdo(), dinero, cantidad + 1);
             } else {
-                return promedioDineroMujeres(r.hijoderecho, dinero, cantidad + 1) + promedioDineroMujeres(r.hijoizquierdo, dinero, cantidad + 1);
+                return promedioDineroMujeres(r.getHijoizquierdo(), dinero, cantidad + 1) + promedioDineroMujeres(r.getHijoizquierdo(), dinero, cantidad + 1);
             }
         } else {
             return dinero / cantidad;
         }
     }
 
-    public double CadenaDeBusqueda(String cadena) {
-        Banco aux = new Banco();
-        return CadenaDeBusqueda(raiz,null, cadena, 0, 0, 0);
+    public CuentaBancaria CadenaDeBusqueda(String cadena) {
+        Banco cuenta = new Banco();
+        return CadenaDeBusqueda(raiz, cadena, cuenta);
     }
 
-    private double CadenaDeBusqueda(NodoArbolBalanceado r, NodoArbolBalanceado n, String cadena, int i, int j, int x) {
-        String vector[] = {r.nombre, r.apellido, r.correo};
+    private CuentaBancaria CadenaDeBusqueda(CuentaBancaria r, String cadena, Banco cuenta) {
         if (r != null) {
-            if (x < vector[i].length() && j < cadena.length()) {
-                if (cadena.charAt(j) == vector[i].charAt(x)) {
-                    return CadenaDeBusqueda(r, n, cadena, i, j + 1, x + 1);
-                } else {
-                    return CadenaDeBusqueda(r, n, cadena, i, j, x + 1);
-                }
-            } else {
-                if (j == cadena.length()) {
-                    return r.codigo;
-                } else {
-                    if (i < vector.length - 1) {
-                        return CadenaDeBusqueda(r, n, cadena, i + 1, j = 0, x = 0);
-                    } else {
-                        return  (CadenaDeBusqueda(r.hijoderecho, n, cadena, i=0, j=0, x=0))+(CadenaDeBusqueda(r.hijoizquierdo, n, cadena, i, j, x));
-                    }
-                }
+            CadenaDeBusqueda(r.getHijoizquierdo(), cadena, cuenta);
+            if (r.getNombre().equalsIgnoreCase(cadena) || r.getApellido().equalsIgnoreCase(cadena) || r.getCorreo().equalsIgnoreCase(cadena)) {
+                cuenta.agregar(r.getGenero(), r.getTipocuenta(), r.getNombre(), r.getApellido(), r.getCorreo(), r.getCodigo());
+                return cuenta.raiz;
             }
+            CadenaDeBusqueda(r.getHijoderecho(), cadena, cuenta);
         }
-        return 0;
+        return cuenta.raiz;
     }
 
 }
