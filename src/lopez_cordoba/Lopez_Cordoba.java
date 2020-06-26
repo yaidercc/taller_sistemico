@@ -19,10 +19,9 @@ public class Lopez_Cordoba {
      */
     public static void main(String[] args) {
         Banco ban = new Banco();
-        CuentaBancaria ban1 = new CuentaBancaria(1, 2, "mar", "arb", "marc", 6);
 
         ban.agregar(1, 2, "mar", "arb", "marc", 6);
-        ban.agregar(2, 1, "juli", "sala", "sabe", 10);
+        ban.agregar(2, 1, "juliana", "sala", "sabe", 10);
         ban.agregar(2, 1, "lui", "fe mosu", "lufe", 8);
         ban.agregar(1, 2, "luis", "fer mo", "lufa", 7);
         /* try {
@@ -32,11 +31,11 @@ public class Lopez_Cordoba {
         } catch (Exception e) {
             System.err.println("no existe la cuenta");
         }*/
-        ban.Consignaciones(6, 1000);
+        ban.Consignaciones(8, 1000);
         ban.Retiros("marc", 6, 200);
         System.out.println("PROMEDIO: "+ban.promedioDineroMujeres());
+        System.out.println("dinero total: "+ban.DineroTotal());
         ban.imprimir();
-
     }
 
 }

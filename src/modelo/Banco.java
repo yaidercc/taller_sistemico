@@ -22,15 +22,19 @@ public class Banco {
     }
 
     public void imprimir() {
-        imprimir(raiz, "");
+         imprimir(raiz, "");
     }
 
     private void imprimir(CuentaBancaria r, String espacios) {
         if (r != null) {
-            imprimir(r.getHijoderecho(), espacios + "   ");
+            if (r.getHijoizquierdo() != null) {
+                imprimir(r.getHijoderecho(), espacios + "   ");
+
+            }
             System.out.println(espacios + r.getCodigo());
             imprimir(r.getHijoizquierdo(), espacios + "   ");
         }
+
     }
 
     public boolean agregar(int genero, int tipocuenta, String nombre, String apellido, String correo, double codigo) {
@@ -300,7 +304,7 @@ public class Banco {
                 if (correo.equals(r.getCorreo()) && dinero <= r.getSaldo()) {
                     r.setSaldo(r.getSaldo() - dinero);
                     System.out.println("transaccion exitosa!");
-                    System.out.println("saldo actual: "+r.getSaldo());
+                    System.out.println("saldo actual: " + r.getSaldo());
                     return true;
                 } else {
                     System.out.println("algo salio mal!");
@@ -309,6 +313,30 @@ public class Banco {
             }
         }
         return false;
+    }
+    public CuentaBancaria retornarCorrientes(){
+        Banco lista = new Banco();        
+        return retornarCorrientes(raiz, lista);
+    }
+    private CuentaBancaria retornarCorrientes(CuentaBancaria r, Banco lista){        
+        if (r != null) {
+            retornarCorrientes(r.getHijoizquierdo(), lista);
+            if (r.getTipocuenta() == 2) {
+                lista.agregar(r.getGenero(), r.getTipocuenta(), r.getNombre(), r.getApellido(), r.getCorreo(), r.getCodigo());
+            }
+            retornarCorrientes(r.getHijoderecho(), lista);
+        }
+        return lista.raiz;
+    }
+    public double DineroTotal(){
+        return DineroTotal(raiz,0);
+    }
+    
+    private static double DineroTotal(CuentaBancaria r,double suma){
+        if(r!=null){
+            return DineroTotal(r.getHijoizquierdo(),suma+=r.getSaldo())+DineroTotal(r.getHijoderecho(), suma+=r.getSaldo());
+        }
+        return suma;
     }
 
 }
