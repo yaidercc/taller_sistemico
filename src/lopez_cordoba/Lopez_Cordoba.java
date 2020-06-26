@@ -31,10 +31,13 @@ public class Lopez_Cordoba {
         } catch (Exception e) {
             System.err.println("no existe la cuenta");
         }*/
-        ban.Consignaciones(8, 1000);
-        ban.Retiros("marc", 6, 200);
-        System.out.println("PROMEDIO: "+ban.promedioDineroMujeres());
-        System.out.println("dinero total: "+ban.DineroTotal());
+//        ban.Consignaciones(8, 1000);
+//        ban.Retiros("marc", 6, 200);
+//        System.out.println("PROMEDIO: "+ban.promedioDineroMujeres());
+//        System.out.println("dinero total: "+ban.DineroTotal());
+//        ban.imprimir();
+        
+        //System.out.println(ban.DineroTotal());
         ban.imprimir();
     }
 
